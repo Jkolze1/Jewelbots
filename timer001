@@ -1,0 +1,54 @@
+
+// declare variables
+Animation animation;
+Buzzer buzz;
+LED led;
+Timer timer;
+int x = 0; // Declare x outside the functions
+
+
+void setup() {
+}
+
+void loop() {
+}
+
+
+// Press magic button for < 2 seconds to call this function
+void button_press(void){
+
+  // x increases by one for each short button press
+  x = x+1;
+}
+
+// Press magic button 2 full seconds to call this function
+void button_press_long(void) {
+  int i = 0;
+  int j = 0; // Variables declared inside a function are local
+
+  // the loop that flashes how many minutes your timer will count down
+  for(int i = 1; i <= x; i++){
+    led.flash_all(BLUE,1000);
+    timer.pause(500);
+  }
+
+  // a minute is 60,000 miliseconds
+  // but the pause method can't handle numbers that big
+  // so we're going to do increments of 10000 times 6
+  // and we'll have the leds flash red every 60 seconds
+  for(int j = 1; j <= x*6; j++){
+    timer.pause(10000);
+    if (j % 6 == 0) {
+      led.flash_all(RED, 1000);
+    }
+  }
+
+  // reset x back to 0 so it's ready for next time
+  x = 0;
+
+  // vibrate when the time is up
+  buzz.short_buzz();
+
+  // celebrate with an Animation
+  animation.rainbows();
+}
